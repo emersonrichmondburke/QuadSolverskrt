@@ -20,6 +20,12 @@ function QF() {
   $("#solution1").text("X intercept at " +x1);
   $("#solution2").text("X intercept at " +x2);
   console.log(a,b,c);
+  context.beginPath();
+  context.arc(w/2+x1*k,h/2,5,0,6.28);
+  context.fill();
+  context.beginPath();
+  context.arc(w/2+x2*k,h/2,5,0,6.28);
+  context.fill();
   results();
   graphQuad();
 }  // close QF
@@ -28,8 +34,32 @@ function results() {
   // finding vertext and displaying symline and yint results
   vX = -(b*1)/(2*a);
   vY = a*Math.pow(vX,2)+b*vX+c*1;
-  $(".vertex").text("Vertex is at (0,"+ vX+","+vY+")");
+  vX = vX.toFixed(2);
+  vY = vY.toFixed(2);
+  $("#vertex").text("Vertex is at (0,"+ vX+","+vY+")");
   $("#y-int").text("Y intercept is at (0,"+ c+")");
+  context.beginPath();
+  //y intercept
+  context.arc(w/2,h/2-c*k,5,0,6.28);
+  context.fill();
+  Xcp = 2*vX;
+  $("cpoint").text("Corr. Pt. is at (,"+ Xcp + "," + c +")");
+  context.beginPath();
+  //vertex
+  context.arc(w/2+vX*k,h/2-vY*k,5,0,6.28);
+  context.fill();
+
+  context.beginPath();
+  // c point
+  context.arc(w/2+2*vX*k,h/2-c*k,5,0,6.28);
+  context.fill();
+
+  context.strokeStyle = "rgba(0,50,200,.3)";
+  context.setLineDash([10,5]);
+  context.beginPath();
+  context.moveTo(w/2+vX*k,0);
+  context.lineTo(w/2+vX*k, h+5);
+  context.stroke();
 
 }  // close results()
 
@@ -64,14 +94,18 @@ function graphpaper() {
     context.lineTo( w, h/2+i*k );
     context.stroke();
 
+}
+
+  for (i=0; i<w/(2*k); i++) {
+
     context.beginPath();
-    context.moveTo( 0, h/2-i*k );
-    context.lineTo( w, h/2-i*k );
+    context.moveTo(w/2-i*k, 0 );
+    context.lineTo(w/2-i*k, h );
     context.stroke();
 
     context.beginPath();
-    context.moveTo( 0, h/2+i*k );
-    context.lineTo( w, h/2+i*k );
+    context.moveTo(w/2+i*k, 0 );
+    context.lineTo(w/2+i*k, h );
     context.stroke();
 
 }
@@ -96,18 +130,20 @@ function graphQuad () {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+function zoomin () {
+  k=k+3;
+  init();
+  graphQuad();
+  results();
+  QF();
+}
+function zoomout () {
+  k=k-3;
+  init();
+  graphQuad();
+  results();
+  QF();
+}
 
 
 $(document).ready(function () {
