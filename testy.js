@@ -7,6 +7,10 @@ function init() {
   w = canvas.width = 600;
   h = canvas.height = 400;
   console.log('canvas is loaded into context');
+  canvasOffset = $("#mycanvas").offset();
+  offsetX = Math.round(canvasOffset.left),
+  offsetY = Math.round(canvasOffset.top); 
+  canvas.addEventListener("mousemove", doMouseMove, false);
   graphpaper();
 }  // close init
 
@@ -54,7 +58,8 @@ function results() {
   context.arc(w/2+2*vX*k,h/2-c*k,5,0,6.28);
   context.fill();
 
-  context.strokeStyle = "rgba(0,50,200,.3)";
+  $("symmetry").text(" Sym line x =" + vX );
+  context.strokeStyle = "rgba(149, 244, 66)";
   context.setLineDash([10,5]);
   context.beginPath();
   context.moveTo(w/2+vX*k,0);
@@ -137,6 +142,7 @@ function zoomin () {
   results();
   QF();
 }
+
 function zoomout () {
   k=k-3;
   init();
@@ -145,6 +151,27 @@ function zoomout () {
   QF();
 }
 
+function resetcanvas () {
+	init();
+	graphQuad();
+	results();
+	QF();
+}
+
+function doMouseMove(event) {
+    // always know where ther mouse is located
+  mouseX = event.clientX-offsetX;
+  mouseY = event.clientY-offsetY;
+  pointX = (mouseX-w/2)/k;
+  pointY = a*Math.pow(pointX,2)+b*pointX+c*1;
+  pointX =  pointX.toFixed(2);
+  pointY =  pointY.toFixed(2);
+  console.log(mouseX,mouseY, pointX, pointY, offsetY, offsetX);
+  context.beginPath();
+  context.arc(mouseX, h/2-pointY*k,5,0,2*Math.PI);
+  context.fill(); 
+  $("#point").text("Point on the curve: ("+pointX+","+pointY+")");
+}  // end doMouseMove
 
 $(document).ready(function () {
     $('#sidebarCollapse').on('click', function () {
