@@ -47,7 +47,7 @@ function results() {
   context.arc(w/2,h/2-c*k,5,0,6.28);
   context.fill();
   Xcp = 2*vX;
-  $("cpoint").text("Corr. Pt. is at (,"+ Xcp + "," + c +")");
+  $("#cpoint").text("Corr. Pt. is at (,"+ Xcp + "," + c +")");
   context.beginPath();
   //vertex
   context.arc(w/2+vX*k,h/2-vY*k,5,0,6.28);
@@ -58,7 +58,7 @@ function results() {
   context.arc(w/2+2*vX*k,h/2-c*k,5,0,6.28);
   context.fill();
 
-  $("symmetry").text(" Sym line x =" + vX );
+  $("#symmetry").text(" Sym line x =" + vX );
   context.strokeStyle = "rgba(149, 244, 66)";
   context.setLineDash([10,5]);
   context.beginPath();
@@ -159,6 +159,7 @@ function resetcanvas () {
 }
 
 function doMouseMove(event) {
+	resetcanvas();
     // always know where ther mouse is located
   mouseX = event.clientX-offsetX;
   mouseY = event.clientY-offsetY;
